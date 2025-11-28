@@ -118,4 +118,32 @@ rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB0
 rosrun your_package your_node.py
 ```
 
+## 🚧 _Trial & Error_
+### **1. Port Arduino tidak terbaca**
+**Masalah:**
+Device `/dev/ttyUSB0` tidak muncul.
+
+**Solusi:**
+- Cek kabel USB  
+- Coba ganti port ke `/dev/ttyACM0`  
+- Cek daftar port dengan perintah:  
+  ```bash
+  ls /dev/tty*
+  ```
+---
+## 📂 Struktur Folder Repository
+Project-ROS-Arduino/
+├── Arduino/
+│ └── main.ino
+│
+├── ros_ws/
+│ ├── src/
+│ │ └── robot_pkg/
+│ │ ├── scripts/
+│ │ └── launch/
+│ └── build/
+│
+├── banner.jpg
+└── README.md
+
 ---
