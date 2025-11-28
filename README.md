@@ -44,15 +44,13 @@ Project ini bertujuan membuat robot yang mampu melakukan:
 Diagram umum alur kerja (opsional, bisa upload gambar):
 [Arduino] → [Serial] → [ROS Node] → [Processing] → [Action/Output]
 
-yaml
-Copy code
 
 ---
 
 ## 🛠️ Langkah-Langkah Pembuatan Sistem  
 *(Hardware & Software)*
 
-### 🔧 1. Hardware Setup
+### 🔧 HARDWARE SETUP
 Silakan isi sesuai robotmu. Template contoh:
 
 - Arduino Uno / Nano / Mega  
@@ -65,17 +63,35 @@ Silakan isi sesuai robotmu. Template contoh:
 Skema rangkaian bisa ditambahkan di sini:
 
 ---
+## 💻 SOFTWARE SETUP
+
+### **1. Install ROS**
+Lakukan instalasi ROS dengan perintah berikut:
+
+```bash
 sudo apt install ros-noetic-desktop-full
+```
 
----
+### **2. Install rosserial**
+Rosserial digunakan untuk komunikasi antara Arduino dan ROS.
+
+```bash
 sudo apt-get install ros-noetic-rosserial ros-noetic-rosserial-arduino
+```
 
----
+### **3. Membuat Workspace ROS**
+Setelah instalasi selesai, buat workspace ROS sebagai tempat penyimpanan package.
+
+```bash
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws
 catkin_make
+```
 
----
+### **4. Kode Arduino**
+Gunakan kode berikut untuk memastikan komunikasi serial berjalan:
+
+```bash
 void setup() {
   Serial.begin(9600);
 }
@@ -83,15 +99,23 @@ void setup() {
 void loop() {
   Serial.println("hello from arduino");
 }
+```
+## 🚀 Menjalankan Sistem ROS + Arduino
+### **1. Menyalakan ROS Master**
+ROS Master adalah pusat komunikasi semua node ROS. Jalankan:
 
----
-# 1. Menyalakan ROS Master
+```bash
 roscore
+```
+### **2. Menjalankan komunikasi Arduino–ROS**
 
-# 2. Menjalankan komunikasi Arduino–ROS
+```bash
 rosrun rosserial_python serial_node.py _port:=/dev/ttyUSB0
+```
 
-# 3. Menjalankan node ROS tambahan (jika ada)
+### **3. Menjalankan node ROS tambahan (jika ada)**
+```bash
 rosrun your_package your_node.py
+```
 
 ---
