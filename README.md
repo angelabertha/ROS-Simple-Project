@@ -4,7 +4,7 @@
 
 <h1 align="center">🤖 ROS + Arduino Robot Project</h1>
 <p align="center">
-  <i>_Project_ MK Robotika Medis!</i>
+  <i>Project MK Robotika Medis</i>
 </p>
 
 ---
