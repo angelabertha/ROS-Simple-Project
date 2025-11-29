@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="header.jpg" alt="header.jpg" width="80%">
+  <img src="header.png" alt="header.png" width="80%">
 </p>
 
 <h1 align="center">🤖 ROS2 + ESP32 Ultrasonic Monitoring System</h1>
@@ -29,9 +29,9 @@ Arsitektur ini memungkinkan komunikasi dua arah antara perangkat embedded dan si
 
 ---
 
-# 🛠️ Langkah-Langkah Pembuatan Sistem  
+# 🛠️ LANGKAH-LANGKAH PEMBUATAN SISTEM  
 
-## 🔧 1. Persiapan Komponen
+## 1 — Persiapan Komponen
 | No | Komponen | Jumlah |
 |----|----------|--------|
 | 1 | ESP32 Dev Board | 1 |
@@ -43,7 +43,7 @@ Arsitektur ini memungkinkan komunikasi dua arah antara perangkat embedded dan si
 | 7 | PC Windows + Python + PIXI | 1 |
 
 ---
-## 🪛 2. Perakitan HC-SR04 dengan ESP32
+## 2 — Perakitan HC-SR04 dengan ESP32
 
 ### Koneksi Pin
 | Sensor | ESP32 | Keterangan |
@@ -57,14 +57,16 @@ Arsitektur ini memungkinkan komunikasi dua arah antara perangkat embedded dan si
 ### Rangkaian Resistor Divider (Wajib untuk Echo → ESP32)
 Tujuan: menurunkan 5V Echo menjadi ~3.3V.
 
-HC-SR04 Echo ---- R1 (1.8 kΩ) ----+----> GPIO 4 ESP32
-|
-R2 (3.3 kΩ)
-|
-GND
----
+```markdown
+HC-SR04 Echo → R1 (1.8kΩ) →+→ GPIO4 ESP32
+                           |
+                           R2 (3.3kΩ)
+                           |
+                          GND
+```
 
 ### Program ESP32 (Arduino IDE)
+cpp
 ```cpp
 #define TRIG_PIN 15
 #define ECHO_PIN 4
@@ -91,20 +93,21 @@ void loop() {
 
   Serial.println(distance); // ROS2 akan baca dari sini
   delay(500);
+}
 ```
 OUTPUT: angka jarak dalam cm via port COM.
 ---
 
-## 💻 3. Persiapan Workspace PIXI
+## 3 — Persiapan Workspace PIXI
 
 ### **Akses Folder Workspace**
-
+powershell
 ```bash
 cd C:\pixi_ws
 ```
 
 ### **Aktifkan Shell PIXI**
-
+powershell
 ```bash
 pixi shell
 ```
@@ -114,25 +117,30 @@ Promt akan berubah menjadi:
 ```
 
 ### **Masuk ke Workspace ROS2**
-
+powershell
 ```bash
 cd C:\pixi_ws\ros2_ws
 ```
+
 ---
-## 🚀 4. Membuat Package ROS2
+## 4 — Membuat Package ROS2
+powershell
 ```bash
 cd src
 ros2 pkg create smart_system --build-type ament_python
 ```
-Struktur terbentuk:
+Struktur direktori otomatis terbentuk:
+```
 smart_system/
- ├── package.xml
- ├── setup.py
- └── smart_system/
-      └── __init__.py
+  ├── package.xml
+  ├── setup.py
+  └── smart_system/
+       └── __init__.py
+```
+---
 
-## ⚙️ 5. Pembuatan _Publisher_ dan _Subscriber_  
-### **Publisher: publisher_ultrasonic.py**
+## 5 — Pembuatan _Publisher_ dan _Subscriber_  
+### **Publisher: `publisher_ultrasonic.py`**
 Membaca data dari COM (ESP32) → mem-publish ke topic ROS2 /distance.
 
 ```python
@@ -175,7 +183,7 @@ if __name__ == '__main__':
     main()
 ```
 ---
-### **Subscriber: subscriber_display.py**
+### **Subscriber: `subscriber_display.py`**
 Menampilkan nilai jarak di terminal.
 ```python
 import rclpy
@@ -207,35 +215,37 @@ if __name__ == '__main__':
 ```
 ---
 
-## 🖥️ 5. Instalasi Dependency
+## 5 — Instalasi Dependency
 **Install pyserial**
+powershell
 ```bash
 pip install pyserial
 pip show pyserial
 ```
 
-***Tambahkan ke setup.py
+***Tambahkan ke `setup.py`
 ```phyton
 install_requires=['setuptools', 'pyserial'],
 ```
 ---
 
-## 🤖 6. Build Workspace ROS2
+## 6 — Build Workspace ROS2
+powershell
 ```bash
 cd C:\pixi_ws\ros2_ws
 colcon build
 . install/setup.ps1
 ```
 ---
-## 🕹️ 7. Menjalankan Node
+## 7 — Menjalankan Node
 ### **Menjalankan Publisher**
-
+powershell
 ```bash
 ros2 run smart_system publisher_ultrasonic
 ```
 
 ### **Menjalankan Subscriber (Terminal baru)**
-
+powershell
 ```bash
 pixi shell
 cd C:\pixi_ws\ros2_ws
@@ -243,24 +253,40 @@ cd C:\pixi_ws\ros2_ws
 ros2 run smart_system subscriber_display
 ```
 Subscriber akan menampilkan data jarak secara _real time_.
+---
 
-## ⛔ 8. Menghentikan Node
+## 8 — Menghentikan Node
 - Tekan CTRL + C
 - Menutup terminal → otomatis mematikan node
 - Jika node macet → hentikan python.exe lewat Task Manager
 
-## 🚧 _Trial & Error_
-### **1. Port Arduino tidak terbaca**
-**Masalah:**
-Device `/dev/ttyUSB0` tidak muncul.
+---
+
+# 🚧 KENDALA & SOLUSI
+## **1. Port ESP32 (COM) Berubah-ubah**
+**Kendala:**
+Setiap kali kabel USB ESP32 dicabut dan dipasang kembali, nomor port COM sering berubah. Akibatnya, ROS2 Publisher tidak bisa membaca data karena kode Python masih menggunakan port lama. Setelah port diubah di kode, workspace juga harus di-build ulang menggunakan:
+
+```
+colcon build
+. install/setup.ps1
+```
 
 **Solusi:**
-- Cek kabel USB  
-- Coba ganti port ke `/dev/ttyACM0`  
-- Cek daftar port dengan perintah:  
-  ```bash
-  ls /dev/tty*
-  ```
+- Cek ulang nomor port ESP32 di Device Manager setiap kali reconnect.
+- Perbarui port di kode Publisher.  
+- Build ulang workspace setelah melakukan perubahan.
+- (Opsional) Buat script auto-detect COM supaya tidak perlu ganti port manual.
+
+---
+## **2. Serial Monitor Arduino Mengunci Port**
+**Kendala:**
+Saat Serial Monitor Arduino IDE terbuka, port COM milik ESP32 “dikunci” oleh Arduino IDE. ROS2 jadi tidak bisa membaca data dari port tersebut karena hanya satu aplikasi boleh memakai port pada satu waktu.
+
+**Solusi:**
+- Tutup Serial Monitor setelah selesai mengecek data dari ESP32.
+- Setelah itu jalankan node ROS2 Publisher, agar port tidak konflik dan bisa dibaca oleh ROS2.
+
 ---
 ### Pertanyaan & Komentar
 - Silakan buka `issue` di repositori utama untuk bertanya atau memberi masukan.
