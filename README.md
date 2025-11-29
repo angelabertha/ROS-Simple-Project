@@ -223,7 +223,7 @@ pip install pyserial
 pip show pyserial
 ```
 
-***Tambahkan ke `setup.py`
+**Tambahkan ke `setup.py`**
 ```phyton
 install_requires=['setuptools', 'pyserial'],
 ```
