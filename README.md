@@ -123,6 +123,7 @@ cd C:\pixi_ws\ros2_ws
 ## 4 — Membuat Package ROS2
 powershell
 ```bash
+mkdir src
 cd src
 ros2 pkg create smart_system --build-type ament_python
 ```
