@@ -46,12 +46,12 @@ Arsitektur ini memungkinkan komunikasi dua arah antara perangkat embedded dan si
 ## 2 — Perakitan HC-SR04 dengan ESP32
 
 ### Koneksi Pin
-| Sensor | ESP32 | Keterangan |
-|--------|-------|------------|
-| VCC | 5V | Sumber daya |
-| GND | GND | Ground |
-| Trig | GPIO 15 | Pemicu |
-| Echo | GPIO 4 | Lewat resistor divider |
+| Sensor | ESP32 | 
+|--------|-------|
+| VCC | 5V | 
+| GND | GND | 
+| Trig | GPIO 15 |
+| Echo | GPIO 4 |
 
 ---
 ### Persiapan ROS
