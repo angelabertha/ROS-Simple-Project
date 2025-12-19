@@ -273,7 +273,20 @@ Subscriber akan menampilkan data jarak secara _real time_.
 - Jika node macet → hentikan python.exe lewat Task Manager
 
 ---
+---
 
+## 🎥 OUTPUT & VIDEO DEMONSTRASI SISTEM
+
+Video berikut menampilkan **output sistem secara real-time**, yang mencakup:
+- Pembacaan jarak oleh sensor ultrasonik HC-SR04
+- Pengiriman data oleh ESP32 melalui serial
+- Publisher ROS2 yang mem-publish data ke topic
+- Subscriber ROS2 yang menampilkan data di terminal
+
+### ▶️ Video Output Sistem
+[Klik di sini untuk melihat video output sistem](output.mp4)
+
+---
 # 🚧 KENDALA & SOLUSI
 ## **1. Port ESP32 (COM) Berubah-ubah**
 **Kendala:**
