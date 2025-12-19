@@ -27,6 +27,15 @@ Dalam project ini:
 
 Arsitektur ini memungkinkan komunikasi dua arah antara perangkat embedded dan sistem ROS2 melalui jaringan, sehingga data dari sensor dapat langsung dimanfaatkan pada sisi host untuk monitoring maupun pengolahan lebih lanjut.
 
+## 🧩 Diagram Blok Sistem
+
+Diagram blok berikut menunjukkan arsitektur sistem
+ROS2 + ESP32 Ultrasonic Monitoring System, mulai dari
+sensor, mikrokontroler, hingga komunikasi dengan ROS2.
+
+<p align="center">
+  <img src="diagramblok.jpg" alt="Diagram Blok Sistem" width="85%">
+</p>
 ---
 
 # 🛠️ LANGKAH-LANGKAH PEMBUATAN SISTEM  
